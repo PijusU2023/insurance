@@ -2,16 +2,16 @@
 
 @section('content')
     <div class="container">
-        <h1>Owner list</h1>
-        <a href="{{ route('owners.create') }}" class="btn btn-primary">Add a new owner</a>
+        <h2>Owners List</h2>
+        <a href="{{ route('owners.create') }}" class="btn btn-success mb-3">Add Owner</a>
+
         <table class="table">
             <thead>
             <tr>
                 <th>Name</th>
                 <th>Surname</th>
-                <th>Phone number</th>
+                <th>Phone</th>
                 <th>Email</th>
-                <th>Address</th>
                 <th>Actions</th>
             </tr>
             </thead>
@@ -22,13 +22,12 @@
                     <td>{{ $owner->surname }}</td>
                     <td>{{ $owner->phone }}</td>
                     <td>{{ $owner->email }}</td>
-                    <td>{{ $owner->address }}</td>
                     <td>
-                        <a href="{{ route('owners.edit', $owner->id) }}" class="btn btn-sm btn-primary">Change</a>
-                        <form action="{{ route('owners.destroy', $owner->id) }}" method="POST" style="display: inline;">
+                        <a href="{{ route('owners.edit', $owner->id) }}" class="btn btn-primary">Edit</a>
+                        <form action="{{ route('owners.destroy', $owner->id) }}" method="POST" class="d-inline">
                             @csrf
                             @method('DELETE')
-                            <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                            <button type="submit" class="btn btn-danger">Delete</button>
                         </form>
                     </td>
                 </tr>
