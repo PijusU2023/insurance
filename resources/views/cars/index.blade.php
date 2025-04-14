@@ -3,7 +3,12 @@
 @section('content')
     <div class="container">
         <h2>Car List</h2>
-        <a href="{{ route('cars.create') }}" class="btn btn-success mb-3">Add Car</a>
+
+        @auth
+            @if(in_array(auth()->user()->role, ['admin', 'user']))
+                <a href="{{ route('cars.create') }}" class="btn btn-success mb-3">Add Car</a>
+            @endif
+        @endauth
 
         <table class="table">
             <thead>
@@ -23,11 +28,19 @@
                     <td>{{ $car->model }}</td>
                     <td>{{ $car->owner->name }} {{ $car->owner->surname }}</td>
                     <td>
-                        <a href="{{ route('cars.edit', $car->id) }}" class="btn btn-warning btn-sm">Edit</a>
-                        <form action="{{ route('cars.destroy', $car->id) }}" method="POST" class="d-inline">
-                            @csrf @method('DELETE')
-                            <button class="btn btn-danger btn-sm" onclick="return confirm('Delete this car?')">Delete</button>
-                        </form>
+                        @auth
+                            @if(in_array(auth()->user()->role, ['admin', 'user']))
+                                <a href="{{ route('cars.edit', $car->id) }}" class="btn btn-warning btn-sm">Edit</a>
+                            @endif
+
+                            @if(auth()->user()->role === 'admin')
+                                <form action="{{ route('cars.destroy', $car->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button class="btn btn-danger btn-sm" onclick="return confirm('Delete this car?')">Delete</button>
+                                </form>
+                            @endif
+                        @endauth
                     </td>
                 </tr>
             @endforeach

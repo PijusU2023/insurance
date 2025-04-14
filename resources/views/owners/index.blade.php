@@ -3,7 +3,12 @@
 @section('content')
     <div class="container">
         <h2>Owners List</h2>
-        <a href="{{ route('owners.create') }}" class="btn btn-success mb-3">Add Owner</a>
+
+        @auth
+            @if(in_array(auth()->user()->role, ['admin', 'user']))
+                <a href="{{ route('owners.create') }}" class="btn btn-success mb-3">Add Owner</a>
+            @endif
+        @endauth
 
         <table class="table">
             <thead>
@@ -23,12 +28,19 @@
                     <td>{{ $owner->phone }}</td>
                     <td>{{ $owner->email }}</td>
                     <td>
-                        <a href="{{ route('owners.edit', $owner->id) }}" class="btn btn-primary">Edit</a>
-                        <form action="{{ route('owners.destroy', $owner->id) }}" method="POST" class="d-inline">
-                            @csrf
-                            @method('DELETE')
-                            <button type="submit" class="btn btn-danger">Delete</button>
-                        </form>
+                        @auth
+                            @if(in_array(auth()->user()->role, ['admin', 'user']))
+                                <a href="{{ route('owners.edit', $owner->id) }}" class="btn btn-primary btn-sm">Edit</a>
+                            @endif
+
+                            @if(auth()->user()->role === 'admin')
+                                <form action="{{ route('owners.destroy', $owner->id) }}" method="POST" class="d-inline">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit" class="btn btn-danger btn-sm" onclick="return confirm('Delete this owner?')">Delete</button>
+                                </form>
+                            @endif
+                        @endauth
                     </td>
                 </tr>
             @endforeach

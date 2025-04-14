@@ -9,29 +9,15 @@ class RouteServiceProvider extends ServiceProvider
 {
     public const HOME = '/home';
 
-    public function boot()
+    public function boot(): void
     {
-        parent::boot();
-    }
+        $this->routes(function () {
+            Route::middleware('web')
+                ->group(base_path('routes/web.php'));
 
-    public function map()
-    {
-        $this->mapApiRoutes();
-        $this->mapWebRoutes();
-    }
-
-    protected function mapWebRoutes()
-    {
-        Route::middleware('web')
-            ->namespace($this->namespace)
-            ->group(base_path('routes/web.php'));
-    }
-
-    protected function mapApiRoutes()
-    {
-        Route::prefix('api')
-            ->middleware('api')
-            ->namespace($this->namespace)
-            ->group(base_path('routes/api.php'));
+            Route::prefix('api')
+                ->middleware('api')
+                ->group(base_path('routes/api.php'));
+        });
     }
 }
