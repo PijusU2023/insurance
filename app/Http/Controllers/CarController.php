@@ -14,6 +14,7 @@ class CarController extends Controller
         return view('cars.index', compact('cars'));
     }
 
+
     public function create()
     {
         $owners = Owner::all();

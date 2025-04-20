@@ -1,17 +1,13 @@
+<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>Car Insurance</title>
+    <title>{{ __('messages.site_title') }}</title>
 
-    <!-- Fonts -->
     <link href="https://fonts.bunny.net/css?family=Nunito" rel="stylesheet">
-
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-
-    <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 <body>
@@ -19,36 +15,44 @@
     <nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm mb-4">
         <div class="container">
             <a class="navbar-brand" href="{{ url('/') }}">
-                [[app_name]]
+                {{ __('messages.site_title') }}
             </a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
-                    aria-controls="navbarContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+                    aria-controls="navbarContent" aria-expanded="false" aria-label="{{ __('messages.toggle_nav') }}">
                 <span class="navbar-toggler-icon"></span>
             </button>
 
             <div class="collapse navbar-collapse" id="navbarContent">
-                <!-- Left Side -->
                 <ul class="navbar-nav me-auto">
                     @auth
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('owners.index') }}">Owners</a>
+                            <a class="nav-link" href="{{ route('owners.index') }}">{{ __('messages.owners') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('cars.index') }}">Cars</a>
+                            <a class="nav-link" href="{{ route('cars.index') }}">{{ __('messages.cars') }}</a>
                         </li>
                     @endauth
-
                 </ul>
 
-                <!-- Right Side -->
                 <ul class="navbar-nav ms-auto">
+                    <li class="nav-item dropdown">
+                        <a id="langDropdown" class="nav-link dropdown-toggle" href="#" role="button"
+                           data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {{ strtoupper(app()->getLocale()) }}
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-end" aria-labelledby="langDropdown">
+                            <a class="dropdown-item" href="{{ route('lang.switch', 'en') }}">English</a>
+                            <a class="dropdown-item" href="{{ route('lang.switch', 'lt') }}">Lietuvių</a>
+                        </div>
+                    </li>
+
                     @guest
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}">Login</a>
+                            <a class="nav-link" href="{{ route('login') }}">{{ __('messages.login') }}</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('register') }}">Register</a>
+                            <a class="nav-link" href="{{ route('register') }}">{{ __('messages.register') }}</a>
                         </li>
                     @else
                         <li class="nav-item dropdown">
@@ -58,10 +62,10 @@
                             </a>
 
                             <div class="dropdown-menu dropdown-menu-end">
-                                <span class="dropdown-item-text text-muted">Role: {{ auth()->user()->role }}</span>
+                                <span class="dropdown-item-text text-muted">{{ __('messages.role') }}: {{ auth()->user()->role }}</span>
                                 <a class="dropdown-item" href="{{ route('logout') }}"
                                    onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                    Logout
+                                    {{ __('messages.logout') }}
                                 </a>
 
                                 <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -92,11 +96,11 @@
     </main>
 
     <footer class="text-center text-muted mt-5 mb-3">
-        <p>[[footer_text]]</p>
+        <p>{{ __('messages.footer_text') }}</p>
+        <small>Locale: {{ session('locale', app()->getLocale()) }}</small>
     </footer>
 </div>
 
-<!-- Bootstrap Bundle JS -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -2,22 +2,7 @@
 
 @section('content')
     <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">[[home_title]]</div>
-
-                    <div class="card-body">
-                        @if (session('status'))
-                            <div class="alert alert-success" role="alert">
-                                {{ session('status') }}
-                            </div>
-                        @endif
-
-                            <p>[[welcome_message]]</p>
-                    </div>
-                </div>
-            </div>
-        </div>
+        <h1>{{ __('messages.home_welcome') }}</h1>
+        <p>{{ __('messages.home_message') }}</p>
     </div>
 @endsection

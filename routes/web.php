@@ -8,12 +8,21 @@ use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Middleware\ReplaceShortCodes;
 
+Route::get('/lang/{locale}', function ($locale) {
+    if (!in_array($locale, ['en', 'lt'])) {
+        abort(400);
+    }
+
+    session(['locale' => $locale]);
+    return redirect()->back();
+})->name('lang.switch');
+
+Route::get('/debug-locale', function () {
+    return 'Locale in session: ' . session('locale');
+});
 
 Route::get('/', fn () => Redirect::to('/login'));
-
-
 Route::get('/dashboard', fn () => Redirect::to('/cars'));
-
 
 Route::get('/login', [App\Http\Controllers\Auth\LoginController::class, 'showLoginForm'])
     ->name('login')
@@ -30,12 +39,9 @@ Route::post('/register', [App\Http\Controllers\Auth\RegisterController::class, '
 Route::post('/logout', [App\Http\Controllers\Auth\LoginController::class, 'logout'])
     ->name('logout');
 
-
 Route::middleware(['auth', ReplaceShortCodes::class])->group(function () {
-    // View-only access
     Route::resource('cars', CarController::class)->only(['index', 'show', 'create', 'store']);
     Route::resource('owners', OwnerController::class)->only(['index', 'show', 'create', 'store']);
-
 
     Route::get('/cars/{car}/edit', [CarController::class, 'edit'])->name('cars.edit');
     Route::put('/cars/{car}', [CarController::class, 'update'])->name('cars.update');
@@ -45,6 +51,5 @@ Route::middleware(['auth', ReplaceShortCodes::class])->group(function () {
     Route::put('/owners/{owner}', [OwnerController::class, 'update'])->name('owners.update');
     Route::delete('/owners/{owner}', [OwnerController::class, 'destroy'])->name('owners.destroy');
 
-    // Home
     Route::get('/home', [HomeController::class, 'index'])->name('home');
 });
